@@ -1,5 +1,5 @@
 import java.awt.Canvas;
-import java.awt.Color;
+//import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
@@ -8,7 +8,7 @@ import java.awt.image.DataBufferInt;
 
 import javax.swing.JFrame;
 
-import com.western.realmofthemadgod.graphics.Screen;
+import com.cianbolster.graphics.Screen;
 
 public class Game extends Canvas implements Runnable{
 
@@ -52,6 +52,7 @@ public class Game extends Canvas implements Runnable{
 	}
 	
 	public void run() {
+		
 		while (running){
 			update();
 			render();
@@ -66,15 +67,19 @@ public class Game extends Canvas implements Runnable{
 	public void render(){
 		BufferStrategy bs = getBufferStrategy();
 		if(bs == null){
-			createBufferStrategy(3);
+			createBufferStrategy(3);// BufferStrategy setups the next screen 
+			// to be put onto the screen.
 			return;
+		}
+		screen.clear();
+		screen.render();
+		
+		for(int i = 0; i < pixels.length; i++){
+			pixels[i] = screen.pixels[i];
 		}
 		
 		Graphics g = bs.getDrawGraphics();
-		///////////////////////////////////////////////////////////////////////////////////////////////////
-		g.setColor(Color.BLACK);
-		g.fillRect(0,0, getWidth(), getHeight());
-		///////////////////////////////////////////////////////////////////////////////////////////////////
+		g.drawImage(image, 0, 0, getWidth(), getHeight(),null);
 		g.dispose();
 		bs.show();
 	}
